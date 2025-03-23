@@ -8,6 +8,8 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -103,9 +105,12 @@ public class TankApplication extends GameApplication {
             },Duration.seconds(1));
         }
 
-        getWorldProperties().intProperty("score").addListener((obs, newNum, oldNum)->{
-            if(getWorldProperties().intProperty("score").intValue()==10){
-                Entity boss = gef.createBoss();
+        getWorldProperties().intProperty("score").addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
+                if(getWorldProperties().intProperty("score").intValue()==10){
+                    Entity boss = gef.createBoss();
+                }
             }
         });
 
