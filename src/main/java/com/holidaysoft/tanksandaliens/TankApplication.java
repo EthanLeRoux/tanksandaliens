@@ -2,9 +2,7 @@ package com.holidaysoft.tanksandaliens;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
@@ -14,10 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import java.util.Map;
-import java.io.IOException;
 import java.util.Random;
-
-import com.holidaysoft.tanksandaliens.GameEntityFactory;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -27,9 +22,6 @@ public class TankApplication extends GameApplication {
     GameEntityFactory gef;
     Entity boss;
     private boolean isBossDead = false;
-    protected  void initMainMenu(Pane mainMenuRoot){
-
-    }
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
