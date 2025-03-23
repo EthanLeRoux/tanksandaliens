@@ -172,12 +172,49 @@ public class TankApplication extends GameApplication {
                 if(getWorldProperties().intProperty("boss-hp").intValue() <= 0) {
                     boss.removeFromWorld();
                     isBossDead = true;
+                    getDialogService().showMessageBox("YOU BEAT THE BOSS!", new Runnable() {
+                        @Override
+                        public void run() {
+                            getGameController().gotoGameMenu();
+                        }
+                    });
                 }
 
                 int bossHp = getWorldProperties().intProperty("boss-hp").intValue();
                 System.out.println("Boss got hit! Current hp = " + bossHp);
+            }
+        });
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.ALIEN_BULLET, GameEntityTypes.PLAYER) {
+            @Override
+            protected void onCollisionBegin(Entity alienBullet, Entity player) {
+                alienBullet.removeFromWorld();
+                inc("hp",-1);
 
+                if(getWorldProperties().intProperty("hp").intValue()==0){
+                    player.removeFromWorld();
+                    getDialogService().showMessageBox("YOU DIED", new Runnable() {
+                        @Override
+                        public void run() {
+                            getGameController().gotoGameMenu();
+                        }
+                    });
+                }
+            }
+        });
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.PLAYER, GameEntityTypes.BOSS) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity boss) {
+                inc("hp",-1);
 
+                if(getWorldProperties().intProperty("hp").intValue()==0){
+                    player.removeFromWorld();
+                    getDialogService().showMessageBox("YOU DIED", new Runnable() {
+                        @Override
+                        public void run() {
+                            getGameController().gotoGameMenu();
+                        }
+                    });
+                }
             }
         });
     }
