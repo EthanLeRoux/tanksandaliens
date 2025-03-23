@@ -57,4 +57,14 @@ public class GameEntityFactory implements EntityFactory {
                 .buildAndAttach();
     }
 
+    @Spawns("boss")
+    public Entity createBoss() {
+        return new EntityBuilder()
+                .type(GameEntityTypes.BOSS)
+                .at(200,200)
+                .viewWithBBox(new Rectangle(100,100, Color.PINK))
+                .with(new CollidableComponent(true))
+                .buildAndAttach();
+    }
+
 }

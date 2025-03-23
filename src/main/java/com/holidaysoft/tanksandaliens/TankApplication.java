@@ -22,7 +22,8 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class TankApplication extends GameApplication {
     private Entity player;
-
+    GameEntityFactory gef;
+    Entity boss;
     protected  void initMainMenu(Pane mainMenuRoot){
 
     }
@@ -71,7 +72,6 @@ public class TankApplication extends GameApplication {
             @Override
             protected void onActionBegin() {
                 Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 300,0,-5);
-                System.out.println("Bullet Spawned!");
                 if(!bullet.isVisible()){
                     bullet.removeFromWorld();
                 }
@@ -83,24 +83,32 @@ public class TankApplication extends GameApplication {
         vars.put("alien-count",0);
         vars.put("hp",3);
         vars.put("score",0);
+        vars.put("boss-hp",10);
     }
 
     @Override
     protected void initGame() {
-        //setLevelFromMap("level1.tmx");
-        GameEntityFactory gef = new GameEntityFactory();
+        gef = new GameEntityFactory();
 
         player = gef.createTank();
 
-        getGameTimer().runAtInterval(() -> {
-            Random random = new Random();
-            double x =random.nextDouble(500);
-            double y = random.nextDouble(500);
+        if(getWorldProperties().intProperty("score").intValue()<=10){
+            getGameTimer().runAtInterval(() -> {
+                Random random = new Random();
+                double x =random.nextDouble(500);
+                double y = random.nextDouble(500);
 
-            Entity alien = gef.createAlien(x,y);
-            inc("alien-count",+1);
-            System.out.println("New alien spawned!");
-        },Duration.seconds(1));
+                Entity alien = gef.createAlien(x,y);
+                inc("alien-count",+1);
+            },Duration.seconds(1));
+        }
+
+        getWorldProperties().intProperty("score").addListener((obs, newNum, oldNum)->{
+            if(getWorldProperties().intProperty("score").intValue()==10){
+                Entity boss = gef.createBoss();
+            }
+        });
+
     }
 
     @Override
@@ -129,6 +137,23 @@ public class TankApplication extends GameApplication {
                         }
                     });
                 }
+            }
+        });
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.BULLET, GameEntityTypes.BOSS) {
+            @Override
+            protected void onCollisionBegin(Entity bullet, Entity boss) {
+                bullet.removeFromWorld();
+                inc("boss-hp",-1);
+
+                if(getWorldProperties().intProperty("boss-hp").intValue() <= 0) {
+                    boss.removeFromWorld();
+                    //boss = null;
+                }
+
+                int bossHp = getWorldProperties().intProperty("boss-hp").intValue();
+                System.out.println("Boss got hit! Current hp = " + bossHp);
+
+
             }
         });
     }
@@ -173,6 +198,13 @@ public class TankApplication extends GameApplication {
         getGameScene().addUINode(playerHPText);
         getGameScene().addUINodes(scoreLabel,scoreText);
     }
+
+//    @Override
+//    protected void onUpdate(double tpf) {
+//        gef = new GameEntityFactory();
+//
+//
+//    }
 
     public static void main(String[] args) {
         launch(args);
