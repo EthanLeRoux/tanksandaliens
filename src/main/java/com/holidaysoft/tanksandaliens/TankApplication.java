@@ -26,6 +26,7 @@ public class TankApplication extends GameApplication {
     private Entity player;
     GameEntityFactory gef;
     Entity boss;
+    private boolean isBossDead = false;
     protected  void initMainMenu(Pane mainMenuRoot){
 
     }
@@ -107,15 +108,15 @@ public class TankApplication extends GameApplication {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
                 if(getWorldProperties().intProperty("score").intValue()==10){
                     boss = gef.createBoss();
-                    while(boss!=null){
+
                         getGameTimer().runAtInterval(()->{
-                            Entity alienBullet = gef.createAlienBullet(boss.getX()+5,boss.getY()+5,100,0,5);
+                            if(isBossDead == false) {
+                                Entity alienBullet = gef.createAlienBullet(boss.getX() + 5, boss.getY() + 5, 100, 0, 5);
+                            }
                         },Duration.seconds(1));
                     }
-                }
             }
         });
-
 
 
     }
@@ -156,6 +157,7 @@ public class TankApplication extends GameApplication {
 
                 if(getWorldProperties().intProperty("boss-hp").intValue() <= 0) {
                     boss.removeFromWorld();
+                    isBossDead = true;
                 }
 
                 int bossHp = getWorldProperties().intProperty("boss-hp").intValue();
