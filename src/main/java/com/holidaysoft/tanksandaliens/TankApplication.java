@@ -82,6 +82,7 @@ public class TankApplication extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("alien-count",0);
         vars.put("hp",3);
+        vars.put("score",0);
     }
 
     @Override
@@ -110,6 +111,7 @@ public class TankApplication extends GameApplication {
             protected void onCollisionBegin(Entity bullet, Entity alien) {
                 alien.removeFromWorld();
                 bullet.removeFromWorld();
+                inc("score",+1);
             }
         });
         physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.PLAYER, GameEntityTypes.ALIEN) {
@@ -138,6 +140,16 @@ public class TankApplication extends GameApplication {
         Text playerHPText = new Text();
         Text playerHPLabel = new Text();
 
+        Text scoreText = new Text();
+        Text scoreLabel = new Text();
+
+        scoreLabel.setText("Score ");
+        scoreLabel.setTranslateX(50);
+        scoreLabel.setTranslateY(300);
+
+        scoreText.setTranslateX(100);
+        scoreText.setTranslateY(300);
+
         playerHPText.setTranslateX(50);
         playerHPText.setTranslateY(200);
 
@@ -151,12 +163,15 @@ public class TankApplication extends GameApplication {
 
         alienCounterText.setTranslateX(150);
         alienCounterText.setTranslateY(100);
+
         alienCounterText.textProperty().bind(getWorldProperties().intProperty("alien-count").asString());
         playerHPText.textProperty().bind(getWorldProperties().intProperty("hp").asString());
+        scoreText.textProperty().bind(getWorldProperties().intProperty("score").asString());
         getGameScene().addUINode(alienCounterText);
         getGameScene().addUINode(alienCounterLabel);
         getGameScene().addUINode(playerHPLabel);
         getGameScene().addUINode(playerHPText);
+        getGameScene().addUINodes(scoreLabel,scoreText);
     }
 
     public static void main(String[] args) {
