@@ -38,12 +38,15 @@ public class GameEntityFactory implements EntityFactory {
     }
 
     @Spawns("alien")
-    public Entity createAlien(double x, double y) {
+    public Entity createAlien(double x, double y,double alienSpeed, double dirX, double dirY) {
+        ProjectileComponent projectileComponent = new ProjectileComponent(new Point2D(dirX,dirY),alienSpeed);
+
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN)
                 .at(x,y)
                 .viewWithBBox(new Circle(16,16,16, Color.RED))
                 .with(new CollidableComponent(true))
+                .with(projectileComponent)
                 .buildAndAttach();
     }
 

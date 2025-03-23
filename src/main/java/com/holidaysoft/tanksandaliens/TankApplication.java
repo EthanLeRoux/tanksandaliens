@@ -69,7 +69,6 @@ public class TankApplication extends GameApplication {
                 player.translate(moveXSpeed,0);
             }
         },KeyCode.RIGHT);
-
         getInput().addAction(new UserAction("player-shoot") {
             @Override
             protected void onActionBegin() {
@@ -98,11 +97,10 @@ public class TankApplication extends GameApplication {
             getGameTimer().runAtInterval(() -> {
                 Random random = new Random();
                 double x =random.nextDouble(500);
-                double y = random.nextDouble(500);
-
-                Entity alien = gef.createAlien(x,y);
-                inc("alien-count",+1);
-            },Duration.seconds(1));
+                //double y = random.nextDouble(500);
+                double y = 10;
+                Entity alien = gef.createAlien(x,y,100,0,5);
+            },Duration.seconds(3));
         }
 
         getWorldProperties().intProperty("score").addListener(new ChangeListener<Number>() {
@@ -152,7 +150,6 @@ public class TankApplication extends GameApplication {
 
                 if(getWorldProperties().intProperty("boss-hp").intValue() <= 0) {
                     boss.removeFromWorld();
-                    //boss = null;
                 }
 
                 int bossHp = getWorldProperties().intProperty("boss-hp").intValue();
@@ -165,8 +162,6 @@ public class TankApplication extends GameApplication {
 
     @Override
     protected void initUI(){
-        Text alienCounterText = new Text();
-        Text alienCounterLabel = new Text();
         Text playerHPText = new Text();
         Text playerHPLabel = new Text();
 
@@ -187,29 +182,13 @@ public class TankApplication extends GameApplication {
         playerHPLabel.setTranslateX(10);
         playerHPLabel.setTranslateY(200);
 
-        alienCounterLabel.setText("Aliens on screen: ");
-        alienCounterLabel.setTranslateX(30);
-        alienCounterLabel.setTranslateY(100);
-
-        alienCounterText.setTranslateX(150);
-        alienCounterText.setTranslateY(100);
-
-        alienCounterText.textProperty().bind(getWorldProperties().intProperty("alien-count").asString());
         playerHPText.textProperty().bind(getWorldProperties().intProperty("hp").asString());
         scoreText.textProperty().bind(getWorldProperties().intProperty("score").asString());
-        getGameScene().addUINode(alienCounterText);
-        getGameScene().addUINode(alienCounterLabel);
+
         getGameScene().addUINode(playerHPLabel);
         getGameScene().addUINode(playerHPText);
         getGameScene().addUINodes(scoreLabel,scoreText);
     }
-
-//    @Override
-//    protected void onUpdate(double tpf) {
-//        gef = new GameEntityFactory();
-//
-//
-//    }
 
     public static void main(String[] args) {
         launch(args);
