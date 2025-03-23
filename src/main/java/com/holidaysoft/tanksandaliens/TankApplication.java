@@ -85,7 +85,7 @@ public class TankApplication extends GameApplication {
         vars.put("alien-count",0);
         vars.put("hp",3);
         vars.put("score",0);
-        vars.put("boss-hp",10);
+        vars.put("boss-hp",30);
     }
 
     @Override
@@ -114,11 +114,25 @@ public class TankApplication extends GameApplication {
                                 Entity alienBullet = gef.createAlienBullet(boss.getX() + 5, boss.getY() + 5, 100, 0, 5);
                             }
                         },Duration.seconds(1));
-                    }
-            }
+
+                    getGameTimer().runAtInterval(() -> {
+                        if (isBossDead == false) {
+                            double newX = boss.getX() + 10;
+                            if (newX > getAppWidth()) {
+                                newX = 0;
+                            }
+                            boss.setX(newX);
+
+                            double newY = boss.getY() + (Math.random()*10);
+                            if(newY > getAppHeight()) {
+                                newY = 0;
+                            }
+                            boss.setY(newY);
+                        }
+                    }, Duration.seconds(0.2));
+                }
+                }
         });
-
-
     }
 
     @Override
