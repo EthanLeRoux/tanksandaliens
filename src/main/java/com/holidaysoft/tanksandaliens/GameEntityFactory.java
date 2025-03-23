@@ -26,7 +26,6 @@ public class GameEntityFactory implements EntityFactory {
 
     @Spawns("bullet")
     public Entity createBullet(double x, double y, double bulletSpeed, double dirX, double dirY) {
-        PhysicsComponent physicsComponent = new PhysicsComponent();
         ProjectileComponent projectileComponent = new ProjectileComponent(new Point2D(dirX,dirY),bulletSpeed);
 
         return new EntityBuilder()
@@ -43,7 +42,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN)
                 .at(x,y)
-                .viewWithBBox(new Circle(50,50,50, Color.RED))
+                .viewWithBBox(new Circle(32,32,32, Color.RED))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }

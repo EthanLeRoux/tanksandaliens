@@ -9,8 +9,6 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import java.util.Map;
 import java.io.IOException;
@@ -68,12 +66,16 @@ public class TankApplication extends GameApplication {
             protected void onActionBegin() {
                 Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 300,0,-5);
                 System.out.println("Bullet Spawned!");
+                if(!bullet.isVisible()){
+                    bullet.removeFromWorld();
+                }
             }
         },KeyCode.SPACE);
     }
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("alien-count",0);
+        vars.put("hp",3);
     }
 
     @Override
@@ -103,15 +105,51 @@ public class TankApplication extends GameApplication {
                 bullet.removeFromWorld();
             }
         });
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.PLAYER, GameEntityTypes.ALIEN) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity alien) {
+                alien.removeFromWorld();
+                inc("hp",-1);
+
+                if(getWorldProperties().intProperty("hp").intValue()==0){
+                    player.removeFromWorld();
+                    getDialogService().showMessageBox("YOU DIED", new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
     protected void initUI(){
         Text alienCounterText = new Text();
-        alienCounterText.setTranslateX(50);
+        Text alienCounterLabel = new Text();
+        Text playerHPText = new Text();
+        Text playerHPLabel = new Text();
+
+        playerHPText.setTranslateX(50);
+        playerHPText.setTranslateY(200);
+
+        playerHPLabel.setText("HP ");
+        playerHPLabel.setTranslateX(10);
+        playerHPLabel.setTranslateY(200);
+
+        alienCounterLabel.setText("Aliens on screen: ");
+        alienCounterLabel.setTranslateX(30);
+        alienCounterLabel.setTranslateY(100);
+
+        alienCounterText.setTranslateX(150);
         alienCounterText.setTranslateY(100);
         alienCounterText.textProperty().bind(getWorldProperties().intProperty("alien-count").asString());
+        playerHPText.textProperty().bind(getWorldProperties().intProperty("hp").asString());
         getGameScene().addUINode(alienCounterText);
+        getGameScene().addUINode(alienCounterLabel);
+        getGameScene().addUINode(playerHPLabel);
+        getGameScene().addUINode(playerHPText);
     }
 
     public static void main(String[] args) {
