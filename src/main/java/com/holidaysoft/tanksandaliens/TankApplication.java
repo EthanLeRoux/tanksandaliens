@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -34,30 +35,40 @@ public class TankApplication extends GameApplication {
     protected void initInput() {
         double moveYSpeed = 3;
         double moveXSpeed = 3;
-        getInput().addAction(new UserAction("move-player-up") {
+        GameEntityFactory gef = new GameEntityFactory();
+
+        getInput().addAction(new UserAction("player-move-up") {
             @Override
             protected void onAction() {
                 player.translate(0,-moveYSpeed);
             }
         },KeyCode.UP);
-        getInput().addAction(new UserAction("move-player-down") {
+        getInput().addAction(new UserAction("player-move-down") {
             @Override
             protected void onAction() {
                 player.translate(0,moveYSpeed);
             }
         },KeyCode.DOWN);
-        getInput().addAction(new UserAction("move-player-left") {
+        getInput().addAction(new UserAction("player-move-left") {
             @Override
             protected void onAction() {
                 player.translate(-moveXSpeed,0);
             }
         },KeyCode.LEFT);
-        getInput().addAction(new UserAction("move-player-right") {
+        getInput().addAction(new UserAction("player-move-right") {
             @Override
             protected void onAction() {
                 player.translate(moveXSpeed,0);
             }
         },KeyCode.RIGHT);
+
+        getInput().addAction(new UserAction("player-shoot") {
+            @Override
+            protected void onAction() {
+                Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 50,0,-5);
+                System.out.println("Bullet Spawned!");
+            }
+        },KeyCode.SPACE);
     }
     @Override
     protected void initGameVars(Map<String, Object> vars) {
@@ -79,6 +90,12 @@ public class TankApplication extends GameApplication {
             inc("alien-count",+1);
             System.out.println("New alien spawned!");
         },Duration.seconds(1));
+    }
+
+    @Override
+    protected void initPhysics() {
+        PhysicsWorld physicsWorld = getPhysicsWorld();
+
     }
 
     @Override
