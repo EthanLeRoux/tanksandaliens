@@ -17,6 +17,7 @@ public class GameEntityFactory implements EntityFactory {
     @Spawns("tank")
     public Entity createTank() {
         return new EntityBuilder()
+                .type(GameEntityTypes.PLAYER)
                 .at(100,100)
                 .viewWithBBox(new Rectangle(50,70, Color.BLUE))
                 .with(new CollidableComponent(true))
@@ -29,6 +30,7 @@ public class GameEntityFactory implements EntityFactory {
         ProjectileComponent projectileComponent = new ProjectileComponent(new Point2D(dirX,dirY),bulletSpeed);
 
         return new EntityBuilder()
+                .type(GameEntityTypes.BULLET)
                 .at(x,y)
                 .viewWithBBox(new Circle(10,10,10, Color.YELLOW))
                 .with(new CollidableComponent(true))
@@ -39,15 +41,17 @@ public class GameEntityFactory implements EntityFactory {
     @Spawns("alien")
     public Entity createAlien(double x, double y) {
         return new EntityBuilder()
+                .type(GameEntityTypes.ALIEN)
                 .at(x,y)
                 .viewWithBBox(new Circle(50,50,50, Color.RED))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
 
-    @Spawns("bullet")
+    @Spawns("alien-bullet")
     public Entity createAlienBullet(double x, double y) {
         return new EntityBuilder()
+                .type(GameEntityTypes.ALIEN_BULLET)
                 .at(x,y)
                 .viewWithBBox(new Circle(10,10,10, Color.GREEN))
                 .with(new CollidableComponent(true))

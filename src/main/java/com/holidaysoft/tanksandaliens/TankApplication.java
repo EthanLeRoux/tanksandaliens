@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -64,8 +65,8 @@ public class TankApplication extends GameApplication {
 
         getInput().addAction(new UserAction("player-shoot") {
             @Override
-            protected void onAction() {
-                Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 50,0,-5);
+            protected void onActionBegin() {
+                Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 300,0,-5);
                 System.out.println("Bullet Spawned!");
             }
         },KeyCode.SPACE);
@@ -95,7 +96,13 @@ public class TankApplication extends GameApplication {
     @Override
     protected void initPhysics() {
         PhysicsWorld physicsWorld = getPhysicsWorld();
-
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.BULLET, GameEntityTypes.ALIEN) {
+            @Override
+            protected void onCollisionBegin(Entity bullet, Entity alien) {
+                alien.removeFromWorld();
+                bullet.removeFromWorld();
+            }
+        });
     }
 
     @Override
