@@ -19,7 +19,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.PLAYER)
                 .at(100,100)
-                .viewWithBBox(new Rectangle(50,70, Color.BLUE))
+                .viewWithBBox(new Rectangle(20,20, Color.BLUE))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
@@ -31,7 +31,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.BULLET)
                 .at(x,y)
-                .viewWithBBox(new Circle(10,10,10, Color.YELLOW))
+                .viewWithBBox(new Circle(5,5,5, Color.YELLOW))
                 .with(new CollidableComponent(true))
                 .with(projectileComponent)
                 .buildAndAttach();
@@ -42,7 +42,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN)
                 .at(x,y)
-                .viewWithBBox(new Circle(32,32,32, Color.RED))
+                .viewWithBBox(new Circle(16,16,16, Color.RED))
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
