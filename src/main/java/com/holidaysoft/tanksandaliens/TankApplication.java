@@ -97,20 +97,26 @@ public class TankApplication extends GameApplication {
             getGameTimer().runAtInterval(() -> {
                 Random random = new Random();
                 double x =random.nextDouble(500);
-                //double y = random.nextDouble(500);
                 double y = 10;
                 Entity alien = gef.createAlien(x,y,100,0,5);
-            },Duration.seconds(3));
+            },Duration.seconds(1));
         }
 
         getWorldProperties().intProperty("score").addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
                 if(getWorldProperties().intProperty("score").intValue()==10){
-                    Entity boss = gef.createBoss();
+                    boss = gef.createBoss();
+                    while(boss!=null){
+                        getGameTimer().runAtInterval(()->{
+                            Entity alienBullet = gef.createAlienBullet(boss.getX()+5,boss.getY()+5,100,0,5);
+                        },Duration.seconds(1));
+                    }
                 }
             }
         });
+
+
 
     }
 

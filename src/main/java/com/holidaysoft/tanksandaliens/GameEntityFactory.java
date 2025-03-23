@@ -51,11 +51,14 @@ public class GameEntityFactory implements EntityFactory {
     }
 
     @Spawns("alien-bullet")
-    public Entity createAlienBullet(double x, double y) {
+    public Entity createAlienBullet(double x, double y,double bulletSpeed, double dirX, double dirY) {
+        ProjectileComponent projectileComponent = new ProjectileComponent(new Point2D(dirX,dirY),bulletSpeed);
+
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN_BULLET)
                 .at(x,y)
                 .viewWithBBox(new Circle(10,10,10, Color.GREEN))
+                .with(projectileComponent)
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
