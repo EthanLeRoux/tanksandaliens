@@ -9,6 +9,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import java.util.Map;
 import java.io.IOException;
@@ -22,12 +23,17 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class TankApplication extends GameApplication {
     private Entity player;
 
+    protected  void initMainMenu(Pane mainMenuRoot){
+
+    }
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(600);
         gameSettings.setHeight(600);
         gameSettings.setTitle("Tanks vs Aliens!");
         gameSettings.setVersion("0.1");
+        gameSettings.setMainMenuEnabled(true);
     }
 
     @Override
@@ -80,6 +86,7 @@ public class TankApplication extends GameApplication {
 
     @Override
     protected void initGame() {
+        //setLevelFromMap("level1.tmx");
         GameEntityFactory gef = new GameEntityFactory();
 
         player = gef.createTank();
@@ -116,7 +123,7 @@ public class TankApplication extends GameApplication {
                     getDialogService().showMessageBox("YOU DIED", new Runnable() {
                         @Override
                         public void run() {
-
+                            getGameController().gotoGameMenu();
                         }
                     });
                 }
