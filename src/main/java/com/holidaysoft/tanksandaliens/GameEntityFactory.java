@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -19,7 +20,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.PLAYER)
                 .at(100,100)
-                .viewWithBBox(new Rectangle(20,20, Color.BLUE))
+                .viewWithBBox("ship.png")
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
@@ -31,7 +32,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.BULLET)
                 .at(x,y)
-                .viewWithBBox(new Circle(5,5,5, Color.YELLOW))
+                .viewWithBBox("blast.png")
                 .with(new CollidableComponent(true))
                 .with(projectileComponent)
                 .buildAndAttach();
@@ -44,7 +45,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN)
                 .at(x,y)
-                .viewWithBBox(new Circle(16,16,16, Color.RED))
+                .viewWithBBox("alien.png")
                 .with(new CollidableComponent(true))
                 .with(projectileComponent)
                 .buildAndAttach();
@@ -57,7 +58,7 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.ALIEN_BULLET)
                 .at(x,y)
-                .viewWithBBox(new Circle(10,10,10, Color.GREEN))
+                .viewWithBBox("enemy-blast.png")
                 .with(projectileComponent)
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
@@ -68,9 +69,8 @@ public class GameEntityFactory implements EntityFactory {
         return new EntityBuilder()
                 .type(GameEntityTypes.BOSS)
                 .at(200,200)
-                .viewWithBBox(new Rectangle(100,100, Color.PINK))
+                .viewWithBBox("boss.png")
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
-
 }
