@@ -87,7 +87,7 @@ public class TankApplication extends GameApplication {
         player = gef.createTank();
 
         getGameScene().setBackgroundRepeat("bg.png");
-
+        play("Orbital Colossus.mp3");
         if(getWorldProperties().intProperty("score").intValue()<=10){
             getGameTimer().runAtInterval(() -> {
                 Random random = new Random();
@@ -162,6 +162,7 @@ public class TankApplication extends GameApplication {
         physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.BULLET, GameEntityTypes.BOSS) {
             @Override
             protected void onCollisionBegin(Entity bullet, Entity boss) {
+                play("alien-dmg.wav");
                 bullet.removeFromWorld();
                 inc("boss-hp",-1);
 
