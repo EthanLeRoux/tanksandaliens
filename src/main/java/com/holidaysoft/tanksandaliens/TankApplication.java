@@ -65,6 +65,7 @@ public class TankApplication extends GameApplication {
         getInput().addAction(new UserAction("player-shoot") {
             @Override
             protected void onActionBegin() {
+                play("player-shoot.wav");
                 Entity bullet = gef.createBullet(player.getX()+5,player.getY()+5, 300,0,-5);
                 if(!bullet.isVisible()){
                     bullet.removeFromWorld();
@@ -134,6 +135,7 @@ public class TankApplication extends GameApplication {
         physicsWorld.addCollisionHandler(new CollisionHandler(GameEntityTypes.BULLET, GameEntityTypes.ALIEN) {
             @Override
             protected void onCollisionBegin(Entity bullet, Entity alien) {
+                play("explosion.wav");
                 alien.removeFromWorld();
                 bullet.removeFromWorld();
                 inc("score",+1);
@@ -146,6 +148,7 @@ public class TankApplication extends GameApplication {
                 inc("hp",-1);
 
                 if(getWorldProperties().intProperty("hp").intValue()==0){
+                    play("explosion.wav");
                     player.removeFromWorld();
                     getDialogService().showMessageBox("YOU DIED", new Runnable() {
                         @Override
@@ -163,6 +166,7 @@ public class TankApplication extends GameApplication {
                 inc("boss-hp",-1);
 
                 if(getWorldProperties().intProperty("boss-hp").intValue() <= 0) {
+                    play("explosion.wav");
                     boss.removeFromWorld();
                     isBossDead = true;
                     getDialogService().showMessageBox("YOU BEAT THE BOSS!", new Runnable() {
@@ -184,6 +188,7 @@ public class TankApplication extends GameApplication {
                 inc("hp",-1);
 
                 if(getWorldProperties().intProperty("hp").intValue()==0){
+                    play("explosion.wav");
                     player.removeFromWorld();
                     getDialogService().showMessageBox("YOU DIED", new Runnable() {
                         @Override
