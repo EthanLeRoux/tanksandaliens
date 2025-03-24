@@ -83,8 +83,9 @@ public class TankApplication extends GameApplication {
     @Override
     protected void initGame() {
         gef = new GameEntityFactory();
-
         player = gef.createTank();
+
+        getGameScene().setBackgroundRepeat("bg.png");
 
         if(getWorldProperties().intProperty("score").intValue()<=10){
             getGameTimer().runAtInterval(() -> {
