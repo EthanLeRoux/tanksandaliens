@@ -19,7 +19,7 @@ public class GameEntityFactory implements EntityFactory {
     public Entity createTank() {
         return new EntityBuilder()
                 .type(GameEntityTypes.PLAYER)
-                .at(100,100)
+                .at(300,550)
                 .viewWithBBox("ship.png")
                 .with(new CollidableComponent(true))
                 .buildAndAttach();
