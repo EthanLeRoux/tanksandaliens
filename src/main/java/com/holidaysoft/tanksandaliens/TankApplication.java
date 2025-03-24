@@ -10,6 +10,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import java.util.Map;
 import java.util.Random;
@@ -19,9 +21,11 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class TankApplication extends GameApplication {
     private Entity player;
-    GameEntityFactory gef;
-    Entity boss;
+    private GameEntityFactory gef;
+    private Entity boss;
     private boolean isBossDead = false;
+    private boolean isBossSpawned = false;
+    private Rectangle rect;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -102,6 +106,20 @@ public class TankApplication extends GameApplication {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
                 if(getWorldProperties().intProperty("score").intValue()==10){
                     boss = gef.createBoss();
+                    isBossSpawned = true;
+
+                    rect = new Rectangle(90,30, Color.RED);
+                    rect.setTranslateX(400);
+                    rect.setTranslateY(100);
+
+                    Text bossHpLabel = new Text();
+                    bossHpLabel.setText("The Mother Ship");
+                    bossHpLabel.setStyle("-fx-font-style: bold");
+                    bossHpLabel.setStyle("-fx-fill: #f60707;");
+                    bossHpLabel.setTranslateX(400);
+                    bossHpLabel.setTranslateY(90);
+
+                    getGameScene().addUINodes(rect,bossHpLabel);
 
                         getGameTimer().runAtInterval(()->{
                             if(isBossDead == false) {
@@ -126,6 +144,13 @@ public class TankApplication extends GameApplication {
                     }, Duration.seconds(0.2));
                 }
                 }
+        });
+
+        getWorldProperties().intProperty("boss-hp").addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                rect.setWidth(rect.getWidth()-3);
+            }
         });
     }
 
