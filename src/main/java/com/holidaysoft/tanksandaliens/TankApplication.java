@@ -76,7 +76,7 @@ public class TankApplication extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("alien-count",0);
-        vars.put("hp",3);
+        vars.put("hp",5);
         vars.put("score",0);
         vars.put("boss-hp",30);
     }
